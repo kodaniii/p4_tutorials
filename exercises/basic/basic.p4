@@ -53,6 +53,20 @@ parser MyParser(packet_in packet,
 
     state start {
         /* TODO: add parser logic */
+        //transition accept;
+        transition parse_ethernet;  //goto parse_ethernet first
+    }
+    
+    state parse_ethernet{
+        packet.extract(hdr.ethernet); //save packet header to headers.ethernet_t
+        transition select(hdr.ethernet.etherType){
+            0x800: parse_ipv4;  //0x800 <- TYPE_IPV4
+            default: accept;    //not ipv4, accept this pkg
+        }
+    }
+    
+    state parse_ipv4{
+        packet.extract(hdr.ipv4);
         transition accept;
     }
 }
@@ -63,7 +77,18 @@ parser MyParser(packet_in packet,
 *************************************************************************/
 
 control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
-    apply {  }
+    //check ipv4 checksum
+    //if apply Checksum != hdr.ipv4.hdrChecksum, standard_metadata.checksum_error <- 1
+    apply {
+    	 verify_checksum(
+            hdr.ipv4.isValid(), 
+            { hdr.ipv4.version, hdr.ipv4.ihl, hdr.ipv4.diffserv, hdr.ipv4.totalLen, hdr.ipv4.identification,
+              hdr.ipv4.flags, hdr.ipv4.fragOffset, hdr.ipv4.ttl, hdr.ipv4.protocol, hdr.ipv4.srcAddr,
+              hdr.ipv4.dstAddr }, 
+            hdr.ipv4.hdrChecksum, 
+            HashAlgorithm.csum16);
+    }
+
 }
 
 
@@ -92,6 +117,13 @@ control MyIngress(inout headers hdr,
             TODO: Implement the logic for forwarding the IPv4 packet based on the
             destination MAC address and egress port.
         */
+        
+        standard_metadata.egress_spec = port;
+        
+        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+        hdr.ethernet.dstAddr = dstAddr;
+
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 
     table ipv4_lpm {
@@ -111,7 +143,11 @@ control MyIngress(inout headers hdr,
         /* TODO: fix ingress control logic
          *  - ipv4_lpm should be applied only when IPv4 header is valid
          */
-        ipv4_lpm.apply();
+        //check ipv4 CheckSum
+        if(hdr.ipv4.isValid() && standard_metadata.checksum_error == 0){
+            ipv4_lpm.apply();
+        }
+        
     }
 }
 
@@ -169,6 +205,11 @@ control MyDeparser(packet_out packet, in headers hdr) {
         TODO: Implement the logic for constructing the output packet by appending
         headers based on the input headers.
         */
+
+        packet.emit(hdr.ethernet);
+        packet.emit(hdr.ipv4);
+        
+        
     }
 }
 
