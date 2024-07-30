@@ -16,12 +16,15 @@ def get_if():
     if not iface:
         print("Cannot find eth0 interface")
         exit(1)
+    
+    print("send: get_if() iface = %s" % iface)
     return iface
 
 def main():
 
     if len(sys.argv)<3:
         print('pass 2 arguments: <destination> "<message>"')
+        print('<destination>: host name or ip')
         exit(1)
 
     addr = socket.gethostbyname(sys.argv[1])

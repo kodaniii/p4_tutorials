@@ -39,9 +39,11 @@ class IPOption_MRI(IPOption):
                                    [],
                                    IntField("", 0),
                                    length_from=lambda pkt:pkt.count*4) ]
+    print("fields_desc = %s" % fields_desc)
+    
 def handle_pkt(pkt):
     if TCP in pkt and pkt[TCP].dport == 1234:
-        print("got a packet")
+        print("got a TCP.dport == 1234 packet")
         pkt.show2()
     #    hexdump(pkt)
         sys.stdout.flush()
