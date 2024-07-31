@@ -69,8 +69,18 @@ parser MyParser(packet_in packet,
     state parse_ethernet {
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
+            TYPE_MYTUNNEL: parse_myTunnel;  //0x1212
             TYPE_IPV4 : parse_ipv4;
             default : accept;
+        }
+    }
+
+    //TODO parse_myTunnel
+    state parse_myTunnel{
+        packet.extract(hdr.myTunnel);
+        transition select(hdr.myTunnel.proto_id){
+            TYPE_IPV4: parse_ipv4;  
+            default: accept;
         }
     }
 
@@ -87,7 +97,23 @@ parser MyParser(packet_in packet,
 *************************************************************************/
 
 control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
-    apply {  }
+    apply {
+        verify_checksum(
+            hdr.ipv4.isValid(),
+            { hdr.ipv4.version,
+              hdr.ipv4.ihl,
+              hdr.ipv4.diffserv,
+              hdr.ipv4.totalLen,
+              hdr.ipv4.identification,
+              hdr.ipv4.flags,
+              hdr.ipv4.fragOffset,
+              hdr.ipv4.ttl,
+              hdr.ipv4.protocol,
+              hdr.ipv4.srcAddr,
+              hdr.ipv4.dstAddr },
+            hdr.ipv4.hdrChecksum,
+            HashAlgorithm.csum16);
+    }
 }
 
 
@@ -123,17 +149,34 @@ control MyIngress(inout headers hdr,
     }
 
     // TODO: declare a new action: myTunnel_forward(egressSpec_t port)
-
+    action myTunnel_forward(egressSpec_t port){
+        standard_metadata.egress_spec = port;
+    }
 
     // TODO: declare a new table: myTunnel_exact
+    table myTunnel_exact{
+        key = {
+            hdr.myTunnel.dst_id: exact;
+        }
+        actions = {
+            myTunnel_forward;
+            drop;
+            NoAction;
+        }
+        size = 1024;
+        default_action = drop();
+    }
+
     // TODO: also remember to add table entries!
-
-
     apply {
         // TODO: Update control flow
-        if (hdr.ipv4.isValid()) {
+        if (hdr.ipv4.isValid() && !hdr.myTunnel.isValid()) {
             ipv4_lpm.apply();
         }
+        if(hdr.myTunnel.isValid()){
+            myTunnel_exact.apply();
+        }
+        
     }
 }
 
@@ -151,7 +194,7 @@ control MyEgress(inout headers hdr,
 *************   C H E C K S U M    C O M P U T A T I O N   **************
 *************************************************************************/
 
-control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
+control MyComputeChecksum(inout headers hdr, inout metadata meta) {
      apply {
         update_checksum(
             hdr.ipv4.isValid(),
@@ -179,6 +222,8 @@ control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         packet.emit(hdr.ethernet);
         // TODO: emit myTunnel header as well
+        packet.emit(hdr.myTunnel);
+
         packet.emit(hdr.ipv4);
     }
 }
