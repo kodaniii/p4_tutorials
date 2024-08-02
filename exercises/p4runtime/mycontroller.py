@@ -20,6 +20,15 @@ SWITCH_TO_HOST_PORT = 1
 SWITCH_TO_SWITCH_PORT = 2
 
 
+"""
+# Write the rules that tunnel traffic from h1 to h2
+writeTunnelRules(p4info_helper, ingress_sw=s1, egress_sw=s2, tunnel_id=100,
+                    dst_eth_addr="08:00:00:00:02:22", dst_ip_addr="10.0.2.2")
+
+# Write the rules that tunnel traffic from h2 to h1
+writeTunnelRules(p4info_helper, ingress_sw=s2, egress_sw=s1, tunnel_id=200,
+                    dst_eth_addr="08:00:00:00:01:11", dst_ip_addr="10.0.1.1")
+"""
 def writeTunnelRules(p4info_helper, ingress_sw, egress_sw, tunnel_id,
                      dst_eth_addr, dst_ip_addr):
     """
@@ -70,7 +79,18 @@ def writeTunnelRules(p4info_helper, ingress_sw, egress_sw, tunnel_id,
 
     # TODO build the transit rule
     # TODO install the transit rule on the ingress switch
-    print("TODO Install transit tunnel rule")
+    #print("TODO Install transit tunnel rule")
+    table_entry = p4info_helper.buildTableEntry(
+        table_name="MyIngress.myTunnel_exact",
+        match_fields={
+            "hdr.myTunnel.dst_id": tunnel_id
+        },
+        action_name="MyIngress.myTunnel_forward",
+        action_params={
+            "port": SWITCH_TO_SWITCH_PORT,
+        })
+    ingress_sw.WriteTableEntry(table_entry)
+    print("Installed transit tunnel rule on %s" % ingress_sw.name)
 
     # 3) Tunnel Egress Rule
     # For our simple topology, the host will always be located on the
@@ -99,12 +119,17 @@ def readTableRules(p4info_helper, sw):
     :param sw: the switch connection
     """
     print('\n----- Reading tables rules for %s -----' % sw.name)
+    #print('sw.ReadTableEntries() =', sw.ReadTableEntries())
     for response in sw.ReadTableEntries():
+        #print('response =', response)
+        #print('response.entities =', response.entities)
         for entity in response.entities:
+            #print('entity =', entity)
             entry = entity.table_entry
             # TODO For extra credit, you can use the p4info_helper to translate
             #      the IDs in the entry to names
-            print(entry)
+            print("[entry]\n", entry)
+            # ???
             print('-----')
 
 
@@ -168,8 +193,8 @@ def main(p4info_file_path, bmv2_file_path):
                          dst_eth_addr="08:00:00:00:01:11", dst_ip_addr="10.0.1.1")
 
         # TODO Uncomment the following two lines to read table entries from s1 and s2
-        # readTableRules(p4info_helper, s1)
-        # readTableRules(p4info_helper, s2)
+        readTableRules(p4info_helper, s1)
+        readTableRules(p4info_helper, s2)
 
         # Print the tunnel counters every 2 seconds
         while True:
@@ -197,6 +222,9 @@ if __name__ == '__main__':
                         default='./build/advanced_tunnel.json')
     args = parser.parse_args()
 
+    #print("p4_info = %s" % args.p4info)
+    #print("bmv2_json = %s" % args.bmv2_json)
+    
     if not os.path.exists(args.p4info):
         parser.print_help()
         print("\np4info file not found: %s\nHave you run 'make'?" % args.p4info)

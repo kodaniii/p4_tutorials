@@ -120,8 +120,10 @@ control MyIngress(inout headers hdr,
 
     action myTunnel_ingress(bit<16> dst_id) {
         hdr.myTunnel.setValid();
+
         hdr.myTunnel.dst_id = dst_id;
         hdr.myTunnel.proto_id = hdr.ethernet.etherType;
+        
         hdr.ethernet.etherType = TYPE_MYTUNNEL;
         ingressTunnelCounter.count((bit<32>) hdr.myTunnel.dst_id);
     }
@@ -132,8 +134,10 @@ control MyIngress(inout headers hdr,
 
     action myTunnel_egress(macAddr_t dstAddr, egressSpec_t port) {
         standard_metadata.egress_spec = port;
+
         hdr.ethernet.dstAddr = dstAddr;
         hdr.ethernet.etherType = hdr.myTunnel.proto_id;
+        
         hdr.myTunnel.setInvalid();
         egressTunnelCounter.count((bit<32>) hdr.myTunnel.dst_id);
     }
