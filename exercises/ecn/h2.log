@@ -1,0 +1,406 @@
+sniffing on eth0
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x3
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65b9
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x3
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65b9
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x3
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65b9
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x3
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65b9
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
+got a packet
+###[ Ethernet ]### 
+  dst       = 08:00:00:00:02:02
+  src       = 08:00:00:00:02:00
+  type      = IPv4
+###[ IP ]### 
+     version   = 4
+     ihl       = 5
+     tos       = 0x1
+     len       = 46
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 62
+     proto     = udp
+     chksum    = 0x65bb
+     src       = 10.0.1.1
+     dst       = 10.0.2.2
+     \options   \
+###[ UDP ]### 
+        sport     = 1234
+        dport     = 4321
+        len       = 26
+        chksum    = 0xe131
+###[ Raw ]### 
+           load      = 'p3p3p3p3p3p4p4p4p4'
+
