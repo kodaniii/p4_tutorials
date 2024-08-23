@@ -116,8 +116,8 @@ parser MyParser(packet_in packet,
 
     state parse_probe_data {
         packet.extract(hdr.probe_data.next);
-        transition select(hdr.probe_data.last.bos) {
-            1: parse_probe_fwd;
+        transition select(hdr.probe_data.last.bos) {    //bos - beginning of stream
+            1: parse_probe_fwd; //after probe_data[-1] extract
             default: parse_probe_data;
         }
     }
@@ -180,6 +180,7 @@ control MyIngress(inout headers hdr,
             ipv4_lpm.apply();
         }
         else if (hdr.probe.isValid()) {
+            //switch: add a new out_port and hop_cnt++
             standard_metadata.egress_spec = (bit<9>)meta.egress_spec;
             hdr.probe.hop_cnt = hdr.probe.hop_cnt + 1;
         }
@@ -216,11 +217,23 @@ control MyEgress(inout headers hdr,
         bit<32> new_byte_cnt;
         time_t last_time;
         time_t cur_time = standard_metadata.egress_global_timestamp;
+
+        /*
+        port_traffic_monitor
+        */
         // increment byte cnt for this packet's port
+        //byte_cnt <- byte_cnt_reg[egress_port]
+        //byte_cnt_reg stores the byte counts of the egress_port
         byte_cnt_reg.read(byte_cnt, (bit<32>)standard_metadata.egress_port);
+        //update byte_cnt
         byte_cnt = byte_cnt + standard_metadata.packet_length;
+
         // reset the byte count when a probe packet passes through
+        //if ipv4, new_byte_cnt <- byte_cnt
+        //if probe, new_byte_cnt <- 0
+        //start calculation
         new_byte_cnt = (hdr.probe.isValid()) ? 0 : byte_cnt;
+        //byte_cnt_reg[egress_port] <- new_byte_cnt
         byte_cnt_reg.write((bit<32>)standard_metadata.egress_port, new_byte_cnt);
 
         if (hdr.probe.isValid()) {
@@ -236,13 +249,15 @@ control MyEgress(inout headers hdr,
             // set switch ID field
             swid.apply();
             // TODO: fill out the rest of the probe packet fields
-            // hdr.probe_data[0].port = ...
-            // hdr.probe_data[0].byte_cnt = ...
+            hdr.probe_data[0].port = (bit<8>)standard_metadata.egress_port;
+            hdr.probe_data[0].byte_cnt = byte_cnt;
             // TODO: read / update the last_time_reg
             // last_time_reg.read(<val>, <index>);
             // last_time_reg.write(<index>, <val>);
-            // hdr.probe_data[0].last_time = ...
-            // hdr.probe_data[0].cur_time = ...
+            last_time_reg.read(last_time, (bit<32>)standard_metadata.egress_port);
+            last_time_reg.write((bit<32>)standard_metadata.egress_port, cur_time);
+            hdr.probe_data[0].last_time = last_time;
+            hdr.probe_data[0].cur_time = cur_time;
         }
     }
 }
