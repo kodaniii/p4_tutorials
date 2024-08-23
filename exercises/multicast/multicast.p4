@@ -65,12 +65,15 @@ control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
 
-    action drop() {
-        mark_to_drop(standard_metadata);
-    }
+    //action drop() {
+    //    mark_to_drop(standard_metadata);
+    //}
 
     // TODO: define `multicast` action to multicast packets to group 1
     // Hint: Check v1model for multicast group
+    action multicast(){
+        standard_metadata.mcast_grp = 1;
+    }
 
     action mac_forward(egressSpec_t port) {
         standard_metadata.egress_spec = port;
@@ -83,11 +86,12 @@ control MyIngress(inout headers hdr,
         actions = {
             // TODO: add `multicast` action to the list of available actions
             mac_forward;
-            drop;
+            multicast;
+            //drop;
         }
         size = 1024;
         // TODO : replace default drop action by multicast
-        default_action = drop;
+        default_action = multicast;
     }
     apply {
         if (hdr.ethernet.isValid())
