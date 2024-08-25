@@ -189,6 +189,7 @@ control MyIngress(inout headers hdr,
         if (hdr.ipv4.isValid()){
             ipv4_lpm.apply();
             if (hdr.tcp.isValid()){
+                //direction = 0: traffic sent internally to externally
                 direction = 0; // default
                 if (check_ports.apply().hit) {
                     // test and set the bloom filter
@@ -203,12 +204,22 @@ control MyIngress(inout headers hdr,
                         // TODO: this packet is part of an outgoing TCP connection.
                         //   We need to set the bloom filter if this is a SYN packet
                         //   E.g. bloom_filter_1.write(<index>, <value>);
+                        if(hdr.tcp.syn == 1){
+                            bloom_filter_1.write(reg_pos_one, 1);
+                            bloom_filter_2.write(reg_pos_two, 1);
+                        }
                     }
                     // Packet comes from outside
                     else if (direction == 1){
                         // TODO: this packet is part of an incomming TCP connection.
                         //   We need to check if this packet is allowed to pass by reading the bloom filter
                         //   E.g. bloom_filter_1.read(<value>, <index>);
+                        bloom_filter_1.read(reg_val_one, reg_pos_one);
+                        bloom_filter_2.read(reg_val_two, reg_pos_two);
+
+                        if(reg_val_one != 1 || reg_val_two != 1){
+                            drop();
+                        }
                     }
                 }
             }
